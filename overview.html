@@ -18,8 +18,7 @@ body{
     color:#1a1a1a;
     overflow-x:hidden;
 }
-
-/* ================= NAV (FIXED LIKE YOUR HERO) ================= */
+/* ================= NAV (BLACK LUXURY + SCROLL EFFECT) ================= */
 nav{
     position:fixed;
     top:30px;
@@ -28,21 +27,19 @@ nav{
     transition:.35s ease;
 }
 
-/* GLASS / OPAQUE STATE ON SCROLL */
+/* SCROLL OPAQUE STATE */
 nav.scrolled{
     top:0;
     left:0;
     right:0;
-
     padding:18px 40px;
-
-    background:rgba(255,255,255,.92);
-    backdrop-filter:blur(14px);
-    -webkit-backdrop-filter:blur(14px);
-
-    box-shadow:0 10px 30px rgba(0,0,0,.10);
+    background:rgba(0,0,0,0.85); /* black glass */
+    backdrop-filter:blur(14px) saturate(180%);
+    -webkit-backdrop-filter:blur(14px) saturate(180%);
+    box-shadow:0 10px 30px rgba(0,0,0,.25);
 }
 
+/* NAV LINKS */
 .nav-links{
     display:flex;
     gap:28px;
@@ -50,24 +47,30 @@ nav.scrolled{
 }
 
 .nav-links a{
-    color:#1a1a1a;
+    color:#1a1a1a; /* black */
     text-decoration:none;
     text-transform:uppercase;
     font-size:13px;
     letter-spacing:2px;
     font-weight:500;
     position:relative;
+    transition:.3s ease;
 }
 
+/* Luxury underline */
 .nav-links a::after{
     content:"";
     position:absolute;
     left:50%;
     bottom:-10px;
+
     width:0;
     height:3px;
-    background:#1a1a1a;
+
+    background:#000000; /* black underline */
     border-radius:999px;
+    box-shadow:0 0 10px rgba(0,0,0,.25);
+
     transform:translateX(-50%);
     transition:.35s ease;
 }
@@ -77,7 +80,11 @@ nav.scrolled{
     width:100%;
 }
 
-/* ================= HAMBURGER (FIXED) ================= */
+nav.scrolled .nav-links a{
+    color:#1a1a1a;
+}
+
+/* HAMBURGER */
 .hamburger{
     display:none;
     width:36px;
@@ -88,7 +95,7 @@ nav.scrolled{
     position:fixed;
     top:24px;
     left:24px;
-    z-index:5000;
+    z-index:6000;
 }
 
 .hamburger span{
@@ -109,7 +116,6 @@ nav.scrolled{
 .hamburger.active span:nth-child(3){
     transform:translateY(-13px) rotate(-45deg);
 }
-
 /* ================= TITLE ================= */
 .page-title{
     text-align:center;
@@ -200,7 +206,7 @@ nav.scrolled{
     letter-spacing:2px;
 }
 
-/* ================= MOBILE FIX (IMPORTANT PART) ================= */
+/* ================= MOBILE ================= */
 @media(max-width:992px){
 
     nav{
@@ -220,25 +226,33 @@ nav.scrolled{
         justify-content:center;
         align-items:center;
         gap:34px;
-        background:rgba(15,15,15,.10);
-        backdrop-filter:blur(24px) saturate(180%);
+
+		background:rgba(255,255,255,.75); /* WHITE GLASS MOBILE MENU */
+		backdrop-filter:blur(24px) saturate(180%);
+		-webkit-backdrop-filter:blur(24px) saturate(180%);
+
         opacity:0;
         visibility:hidden;
-        transition:.45s ease;
-        z-index:4000;
+        pointer-events:none;
+        transform: translateY(-100%);
+        transition: transform 0.45s ease, opacity 0.45s ease, visibility 0.45s ease;
+        z-index:5000;
     }
 
     .nav-links.active{
         opacity:1;
         visibility:visible;
+        pointer-events:auto;
+        transform: translateY(0);
     }
 
     .nav-links a{
         font-size:1.6rem;
         letter-spacing:5px;
+        color:#1a1a1a;
+        font-weight:300;
     }
 
-    /* ✅ FIX: reverse rows also stack correctly */
     .row,
     .row.reverse{
         flex-direction:column;
