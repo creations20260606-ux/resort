@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reviews | Seafront Heritage Residence</title>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #ffffff; color: #1a1a1a; overflow-x: hidden; }
+
+        /* NAVIGATION */
+        nav {
+            position: fixed;
+            top: 30px;
+            left: 40px;
+            z-index: 3000;
+            transition: 0.35s ease;
+        }
+
+        /* FIXED SCROLLED STATE */
+        nav.scrolled {
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 18px 40px;
+            background: rgba(255, 255, 255, .92);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .10);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #1a1a1a;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 13px;
+            letter-spacing: 2px;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: -10px;
+            width: 0;
+            height: 3px;
+            background: #1a1a1a;
+            border-radius: 999px;
+            transform: translateX(-50%);
+            transition: .35s ease;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        /* HAMBURGER */
+        .hamburger {
+            display: none;
+            width: 36px;
+            height: 28px;
+            cursor: pointer;
+            flex-direction: column;
+            justify-content: space-between;
+            position: fixed;
+            top: 24px;
+            left: 24px;
+            z-index: 5000;
+        }
+
+        .hamburger span {
+            width: 100%;
+            height: 2px;
+            background: #1a1a1a;
+            transition: .4s ease;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: translateY(13px) rotate(45deg);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: translateY(-13px) rotate(-45deg);
+        }
+
+        /* PAGE TITLE */
+        .page-title {
+            text-align: center;
+            padding: 140px 20px 40px;
+            font-weight: 300;
+            letter-spacing: 8px;
+            font-size: 18px;
+            text-transform: uppercase;
+        }
+
+        .page-title::after {
+            content: "";
+            display: block;
+            width: 50px;
+            height: 1px;
+            background: rgba(0, 0, 0, .2);
+            margin: 16px auto 0;
+        }
+
+        /* SECTION */
+        .section {
+            max-width: 1200px;
+            margin: auto;
+            padding: 40px 40px 120px;
+        }
+
+        /* REVIEW CARDS */
+        .reviews {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .review-card {
+            background: #fff;
+            border: 1px solid rgba(0,0,0,.08);
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow: 0 12px 35px rgba(0,0,0,.06);
+            line-height: 1.8;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .review-card h4 {
+            margin-bottom: 10px;
+            font-weight: 500;
+            font-size: 16px;
+        }
+
+        .review-card p {
+            font-size: 15px;
+        }
+
+        .review-rating {
+            margin-top: 15px;
+            color: #f5a623;
+            font-size: 16px;
+        }
+
+        /* MOBILE */
+        @media(max-width:992px){
+            nav { top: 24px; left: 24px; }
+
+            .hamburger { display: flex; }
+
+            .nav-links {
+                position: fixed;
+                inset: 0;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 34px;
+                background: rgba(15,15,15,.10);
+                backdrop-filter: blur(24px) saturate(180%);
+                opacity: 0;
+                visibility: hidden;
+                transition: .45s ease;
+                z-index: 4000;
+            }
+
+            .nav-links.active {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .nav-links a {
+                font-size: 1.6rem;
+                letter-spacing: 5px;
+            }
+        }
+
+        /* FOOTER */
+        .lux-footer {
+            margin-top: 120px;
+            padding: 80px 20px;
+            border-top: 1px solid rgba(0,0,0,.08);
+        }
+
+        .footer-inner {
+            max-width: 1600px;
+            margin: auto;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            text-decoration: none;
+            color: #1a1a1a;
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAV -->
+    <nav>
+        <div class="hamburger" id="hamburger">
+            <span></span><span></span><span></span>
+        </div>
+
+        <ul class="nav-links" id="menu">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="overview.html">Overview</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="accommodation.html">Accommodation</a></li>
+            <li><a href="amenities.html">Amenities</a></li>
+            <li><a href="location.html">Location</a></li>
+            <li><a href="reviews.html" class="active">Reviews</a></li>
+            <li><a href="book.html">Book</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- TITLE -->
+    <header class="page-title">REVIEWS</header>
+
+    <!-- CONTENT -->
+    <section class="section">
+        <div class="reviews">
+
+            <div class="review-card">
+                <h4>Jane D.</h4>
+                <p>"Absolutely stunning stay! The view from the balcony was breathtaking, and the staff were incredibly attentive."</p>
+                <div class="review-rating">★★★★★</div>
+            </div>
+
+            <div class="review-card">
+                <h4>Michael S.</h4>
+                <p>"Perfect location right by the marina. Walkable to all cafes and shops, with luxury comfort throughout the residence."</p>
+                <div class="review-rating">★★★★★</div>
+            </div>
+
+            <div class="review-card">
+                <h4>Sofia P.</h4>
+                <p>"A true gem in Patmos. The apartment had everything we needed and more. Loved the quiet harborfront vibes."</p>
+                <div class="review-rating">★★★★★</div>
+            </div>
+
+            <div class="review-card">
+                <h4>Alex K.</h4>
+                <p>"Exceptional service and a serene atmosphere. Highly recommend for couples seeking a romantic getaway."</p>
+                <div class="review-rating">★★★★★</div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="lux-footer">
+        <div class="footer-inner">
+            <div class="footer-brand">PATMOS INN</div>
+
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="overview.html">Overview</a>
+                <a href="gallery.html">Gallery</a>
+                <a href="accommodation.html">Accommodation</a>
+                <a href="amenities.html">Amenities</a>
+                <a href="location.html">Location</a>
+                <a href="reviews.html" class="active">Reviews</a>
+                <a href="book.html">Book</a>
+                <a href="contact.html">Contact</a>
+            </div>
+
+            <div class="footer-meta">
+                Skala Patmos • Greece<br>
+                © 2026 All Rights Reserved
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPT -->
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const menu = document.getElementById('menu');
+        const nav = document.querySelector('nav');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            menu.classList.toggle('active');
+        });
+
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                menu.classList.remove('active');
+            });
+        });
+
+        // SCROLL EFFECT (FIXED)
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // ACTIVE LINK
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            if (link.getAttribute('href') === currentPage) {
+                link.classList.add('active');
+            }
+        });
+    </script>
+
+</body>
+</html>
