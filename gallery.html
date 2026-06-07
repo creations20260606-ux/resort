@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gallery | Patmos Inn</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial,sans-serif;
+    background:#fff;
+    color:#1a1a1a;
+    overflow-x:hidden;
+}
+
+/* ================= NAV ================= */
+nav{
+    position:fixed;
+    top:30px;
+    left:40px;
+    z-index:3000;
+    transition:.35s ease;
+}
+
+nav.scrolled{
+    top:0;
+    left:0;
+    right:0;
+    padding:18px 40px;
+    background:rgba(255,255,255,.92);
+    backdrop-filter:blur(14px);
+    box-shadow:0 10px 30px rgba(0,0,0,.10);
+}
+
+.nav-links{
+    display:flex;
+    gap:28px;
+    list-style:none;
+}
+
+.nav-links a{
+    color:#1a1a1a;
+    text-decoration:none;
+    text-transform:uppercase;
+    font-size:13px;
+    letter-spacing:2px;
+    font-weight:500;
+    position:relative;
+}
+
+.nav-links a::after{
+    content:"";
+    position:absolute;
+    left:50%;
+    bottom:-10px;
+    width:0;
+    height:3px;
+    background:#1a1a1a;
+    transform:translateX(-50%);
+    transition:.35s ease;
+}
+
+.nav-links a:hover::after,
+.nav-links a.active::after{
+    width:100%;
+}
+
+/* ================= HAMBURGER ================= */
+.hamburger{
+    display:none;
+    width:36px;
+    height:28px;
+    cursor:pointer;
+    flex-direction:column;
+    justify-content:space-between;
+    position:fixed;
+    top:24px;
+    left:24px;
+    z-index:5000;
+}
+
+.hamburger span{
+    width:100%;
+    height:2px;
+    background:#1a1a1a;
+    transition:.4s ease;
+}
+
+.hamburger.active span:nth-child(1){
+    transform:translateY(13px) rotate(45deg);
+}
+
+.hamburger.active span:nth-child(2){
+    opacity:0;
+}
+
+.hamburger.active span:nth-child(3){
+    transform:translateY(-13px) rotate(-45deg);
+}
+
+/* ================= TITLE ================= */
+.page-title{
+    text-align:center;
+    padding:140px 20px 40px;
+    font-weight:300;
+    letter-spacing:8px;
+    font-size:18px;
+    text-transform:uppercase;
+}
+
+/* ================= INTRO ================= */
+.gallery-intro{
+    max-width:900px;
+    margin:0 auto 60px;
+    padding:0 30px;
+    text-align:center;
+    line-height:1.9;
+    font-size:15px;
+    color:#555;
+}
+
+/* ================= GALLERY ================= */
+.gallery-section{
+    max-width:1600px;
+    margin:auto;
+    padding:20px 40px 120px;
+}
+
+.gallery-grid{
+    column-count:4;
+    column-gap:24px;
+}
+
+.gallery-item{
+    break-inside:avoid;
+    margin-bottom:24px;
+    border-radius:20px;
+    overflow:hidden;
+    cursor:pointer;
+}
+
+.gallery-item img{
+    width:100%;
+    display:block;
+    border-radius:20px;
+    transition:.7s ease;
+}
+
+.gallery-item:hover img{
+    transform:scale(1.04);
+}
+
+/* ================= LIGHTBOX ================= */
+.lightbox{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.98);
+    justify-content:center;
+    align-items:center;
+    z-index:999999;
+    flex-direction:column;
+}
+
+.lightbox.active{
+    display:flex;
+}
+
+.lightbox img{
+    max-width:95vw;
+    max-height:95vh;
+    object-fit:contain;
+}
+
+/* CLOSE BUTTON */
+.close-lightbox{
+    position:fixed;
+    top:20px;
+    right:30px;
+    font-size:60px;
+    color:#fff;
+    cursor:pointer;
+    z-index:1000001;
+}
+
+/* NAV BUTTONS */
+.nav-btn{
+    position:fixed;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:60px;
+    color:white;
+    background:none;
+    border:none;
+    cursor:pointer;
+    z-index:1000001;
+    user-select:none;
+}
+
+.prev-btn{ left:25px; }
+.next-btn{ right:25px; }
+
+/* ================= FOOTER ================= */
+.lux-footer{
+    margin-top:120px;
+    padding:80px 20px;
+    border-top:1px solid rgba(0,0,0,.08);
+}
+.footer-inner{
+    max-width:1600px;
+    margin:auto;
+    text-align:center;
+    display:flex;
+    flex-direction:column;
+    gap:25px;
+}
+.footer-links{
+    display:flex;
+    justify-content:center;
+    gap:25px;
+    flex-wrap:wrap;
+}
+.footer-links a{
+    text-decoration:none;
+    color:#1a1a1a;
+    font-size:13px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+}
+.footer-meta{
+    font-size:14px;
+    color:#555;
+}
+
+/* ================= MOBILE ================= */
+@media(max-width:992px){
+    .gallery-grid{ column-count:2; }
+
+    nav{ top:24px; left:24px; }
+
+    .hamburger{ display:flex; }
+
+    .nav-links{
+        position:fixed;
+        inset:0;
+        flex-direction:column;
+        justify-content:center;
+        align-items:center;
+        gap:34px;
+        background:rgba(15,15,15,.10);
+        backdrop-filter:blur(24px);
+        opacity:0;
+        visibility:hidden;
+    }
+
+    .nav-links.active{
+        opacity:1;
+        visibility:visible;
+    }
+}
+
+@media(max-width:600px){
+    .gallery-grid{ column-count:1; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAV -->
+<nav>
+    <div class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+    </div>
+
+    <ul class="nav-links" id="menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="overview.html">Overview</a></li>
+        <li><a href="gallery.html" class="active">Gallery</a></li>
+        <li><a href="accommodation.html">Accommodation</a></li>
+        <li><a href="amenities.html">Amenities</a></li>
+        <li><a href="location.html">Location</a></li>
+        <li><a href="reviews.html">Reviews</a></li>
+        <li><a href="book.html">Book</a></li>
+        <li><a href="contact.html">Contact</a></li>
+    </ul>
+</nav>
+
+<header class="page-title">Gallery</header>
+
+<div class="gallery-intro">
+Explore Patmos Inn through a curated collection of photographs.
+</div>
+
+<section class="gallery-section">
+    <div class="gallery-grid">
+        <div class="gallery-item"><img src="./images/gallery/gallery_1.jpg"></div>
+        <div class="gallery-item"><img src="./images/gallery/gallery_2.jpg"></div>
+        <div class="gallery-item"><img src="./images/gallery/gallery_3.jpg"></div>
+        <div class="gallery-item"><img src="./images/gallery/gallery_4.jpg"></div>
+        <div class="gallery-item"><img src="./images/gallery/gallery_5.jpg"></div>
+        <div class="gallery-item"><img src="./images/gallery/gallery_6.jpg"></div>
+        <div class="gallery-item"><img src="./images/gallery/gallery_7.jpg"></div>
+        <div class="gallery-item"><img src="./images/gallery/gallery_8.jpg"></div>
+        <div class="gallery-item"><img src="./images/gallery/gallery_9.jpg"></div>
+        <div class="gallery-item"><img src="./images/gallery/gallery_10.jpg"></div>
+        <div class="gallery-item"><img src="./images/gallery/gallery_11.jpg"></div>
+        <div class="gallery-item"><img src="./images/gallery/gallery_12.jpg"></div>
+    </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+    <span class="close-lightbox" id="closeBtn">&times;</span>
+    <button class="nav-btn prev-btn" id="prevBtn">&#10094;</button>
+    <img id="lightbox-img" src="">
+    <button class="nav-btn next-btn" id="nextBtn">&#10095;</button>
+</div>
+
+<footer class="lux-footer">
+    <div class="footer-inner">
+        <div class="footer-brand">PATMOS INN</div>
+        <div class="footer-links"> 
+            <a href="index.html">Home</a> 
+            <a href="overview.html">Overview</a> 
+            <a href="gallery.html" class="active">Gallery</a> 
+            <a href="accommodation.html">Accommodation</a> 
+            <a href="amenities.html">Amenities</a> 
+            <a href="location.html">Location</a> 
+            <a href="reviews.html">Reviews</a> 
+            <a href="book.html">Book</a> 
+            <a href="contact.html">Contact</a> 
+        </div>
+        <div class="footer-meta"> Skala Patmos • Greece
+            <br> © 2026 All Rights Reserved 
+        </div>
+    </div>
+</footer>
+
+<script>
+
+/* MENU */
+const hamburger = document.getElementById("hamburger");
+const menu = document.getElementById("menu");
+
+hamburger.addEventListener("click", () => {
+    hamburger.classList.toggle("active");
+    menu.classList.toggle("active");
+});
+
+/* SCROLL NAV */
+window.addEventListener("scroll", () => {
+    document.querySelector("nav")
+        .classList.toggle("scrolled", window.scrollY > 50);
+});
+
+/* LIGHTBOX */
+const images = document.querySelectorAll(".gallery-item img");
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightbox-img");
+const closeBtn = document.getElementById("closeBtn");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+
+let currentIndex = 0;
+
+/* OPEN */
+images.forEach((img, index) => {
+    img.addEventListener("click", () => {
+        currentIndex = index;
+        lightbox.classList.add("active");
+        lightboxImg.src = img.src;
+        document.body.style.overflow = "hidden";
+    });
+});
+
+function showImage(index){
+    if(index < 0) index = images.length - 1;
+    if(index >= images.length) index = 0;
+    currentIndex = index;
+    lightboxImg.src = images[currentIndex].src;
+}
+
+/* NAV */
+prevBtn.addEventListener("click", () => showImage(currentIndex - 1));
+nextBtn.addEventListener("click", () => showImage(currentIndex + 1));
+
+/* CLOSE */
+function closeLightbox(){
+    lightbox.classList.remove("active");
+    document.body.style.overflow = "";
+}
+
+closeBtn.addEventListener("click", closeLightbox);
+
+lightbox.addEventListener("click", (e) => {
+    if(e.target === lightbox) closeLightbox();
+});
+
+/* KEYBOARD */
+document.addEventListener("keydown", (e) => {
+    if(!lightbox.classList.contains("active")) return;
+    if(e.key === "ArrowLeft") showImage(currentIndex - 1);
+    if(e.key === "ArrowRight") showImage(currentIndex + 1);
+    if(e.key === "Escape") closeLightbox();
+});
+
+</script>
+
+</body>
+</html>
